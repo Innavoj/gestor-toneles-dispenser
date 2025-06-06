@@ -1,0 +1,6 @@
+{
+  "name": "Brewery Keg Tracker",
+  "description": "A React application for managing and tracking beer kegs and dispensers in a brewery, including registration, production assignment, real-time status/location updates, usage history, maintenance scheduling, and reporting.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}

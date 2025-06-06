@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestion Toneles y Dispenser</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'brew-brown': {
+                '50': '#f6f4ef',
+                '100': '#ece7d9',
+                '200': '#d8cbb3',
+                '300': '#c3ae8c',
+                '400': '#b0926b',
+                '500': '#a17f56', // Primary Brown
+                '600': '#8e6f4c',
+                '700': '#705840',
+                '800': '#5a4736',
+                '900': '#4b3b30',
+                '950': '#2c211a',
+              },
+              'brew-gold': {
+                '500': '#facc15', // Primary Gold/Yellow for accents
+              }
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.6.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-brew-brown-50">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
+    
