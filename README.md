@@ -1,4 +1,5 @@
-# Run and deploy your AI Studio app
+# Proyecto para gestionar los toneles y dispenser de una fabrica de cervezas
+# realizado en Vite + React + utiliza herramientas de IA Gemini
 
 This contains everything you need to run your app locally.
 
