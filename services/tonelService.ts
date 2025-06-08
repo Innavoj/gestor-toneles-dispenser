@@ -45,11 +45,33 @@ export const tonelService = {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(tonelData),
+      
     });
+    console.log(tonelData);
     if (!response.ok) {
       if (response.status === 404) return undefined;
       const errorData = await response.json().catch(() => ({ message: `Error ${response.status}: ${response.statusText}` }));
       throw new Error(errorData.message || `Failed to update tonel ${idtonel}`);
+    }
+    return response.json();
+  },
+
+
+
+  updateTonelStatusLocation: async (idtonel: string, tonelData: Partial<TonelFormData>): Promise<Tonel | undefined> => {
+    const response = await fetch(`${API_BASE_URL}/toneles/status/${idtonel}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(tonelData),
+      
+    });
+    console.log(tonelData);
+    if (!response.ok) {
+      if (response.status === 404) return undefined;
+      const errorData = await response.json().catch(() => ({ message: `Error ${response.status}: ${response.statusText}` }));
+      throw new Error(errorData.message || `Failed to update tonel Status ${idtonel}`);
     }
     return response.json();
   },

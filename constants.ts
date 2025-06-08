@@ -8,7 +8,7 @@ import {
   SelectOption 
 } from './types';
 
-export const APP_NAME = "Gestor de Cervecería";
+export const APP_NAME = "Gestor de Toneles";
 
 export const DEFAULT_TONEL_LOCATIONS: SelectOption[] = Object.values(TonelLocation).map(loc => ({
   value: loc,

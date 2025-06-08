@@ -44,7 +44,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       {/* Sidebar */}
       <div className="w-64 bg-brew-brown-700 text-white flex flex-col shadow-lg">
         <div className="flex items-center justify-center h-20 border-b border-brew-brown-600">
-          <img src="https://picsum.photos/seed/brewlogo/40/40" alt="Logo Cervecería" className="h-10 w-10 mr-2 rounded-full" />
+          <img src="/hatuey.jfif" alt="Logo Cervecería" className="h-10 w-10 mr-2 rounded-full" />
           <h1 className="text-xl font-bold text-brew-gold-500">{APP_NAME}</h1>
         </div>
         <nav className="flex-grow p-4 space-y-2">

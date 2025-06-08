@@ -94,7 +94,7 @@ const TonelManagementPage: React.FC = () => {
   const handleUpdateTonelStatus = async (idtonel: string, status: TonelStatus, newLocation: TonelLocation, notas?: string) => {
     try {
       setIsLoading(true);
-      await tonelService.updateTonel(idtonel, { status, location: newLocation, notas });
+      await tonelService.updateTonelStatusLocation(idtonel, { status, location: newLocation, notas });
       await fetchToneles(); 
       setIsUpdateStatusModalOpen(false);
     } catch (err) {

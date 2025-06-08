@@ -6,6 +6,7 @@ import Modal from '../ui/Modal';
 import Select from '../ui/Select';
 import Textarea from '../ui/Textarea';
 import Button from '../ui/Button';
+ 
 
 interface UpdateTonelStatusModalProps {
   isOpen: boolean;
@@ -18,8 +19,9 @@ const UpdateTonelStatusModal: React.FC<UpdateTonelStatusModalProps> = ({ isOpen,
   const [status, setStatus] = useState<TonelStatus>(TonelStatus.VACIO);
   const [location, setLocation] = useState<TonelLocation>(TonelLocation.AREA_ALMACENAMIENTO);
   const [notas, setNotas] = useState<string>('');
-
-  useEffect(() => {
+ 
+  
+ useEffect(() => {
     if (tonel) {
       setStatus(tonel.status);
       setLocation(tonel.location);

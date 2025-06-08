@@ -56,6 +56,7 @@ export const mttoTonelService = {
       },
       body: JSON.stringify(mttoData),
     });
+    console.log(mttoData);
     if (!response.ok) {
       if (response.status === 404) return undefined;
       const errorData = await response.json().catch(() => ({ message: `Error ${response.status}: ${response.statusText}` }));
