@@ -185,18 +185,18 @@ const TonelDetailPage: React.FC = () => {
       </Card>
 
       <Card title="Lotes de Producción Asociados">
-        {lotesAsociados.length === 0 ? (
+        {lotesAsociados.length === 0 ? ( 
           <p className="text-brew-brown-600">Este tonel no está asociado a ningún lote de producción actualmente.</p>
-        ) : (
+        ) : ( 
           <ul className="divide-y divide-brew-brown-100">
-            {lotesAsociados.map(lote => (
+            {lotesAsociados.map(lote => ( 
               <li key={lote.idlote} className="py-2">
-                <Link to={`/lotes/${lote.idlote}`} className="text-brew-brown-600 hover:underline">
+                <Link to={`/lotes/`} className="text-brew-brown-600 hover:underline">
                   {lote.lotename} ({lote.style}) - Estado: {lote.status}
                 </Link>
                 <p className="text-xs text-brew-brown-500">Vol: {lote.volumen}L | Prod: {formatDate(lote.entprod)}</p>
-              </li>
-            ))}
+              </li> 
+            ))} 
           </ul>
         )}
       </Card>

@@ -23,3 +23,5 @@ backend*
 *.njsproj
 *.sln
 *.sw?
+
+.vercel

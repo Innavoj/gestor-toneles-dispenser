@@ -4,8 +4,6 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { HashRouter } from 'react-router-dom';
 
- 
-
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

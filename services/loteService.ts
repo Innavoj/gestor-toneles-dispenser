@@ -68,7 +68,7 @@ export const loteService = {
     // Assuming the backend API for lotes supports filtering by idtonel via query parameter.
     // e.g., GET /api/lotes?idtonel=some-tonel-id
     // Adjust the endpoint if your backend expects a different route structure, e.g., /api/toneles/{idtonel}/lotes
-    const response = await fetch(`${API_BASE_URL}/lotes?idtonel=${encodeURIComponent(idtonel)}`);
+    const response = await fetch(`${API_BASE_URL}/lotes/?idtonel=${encodeURIComponent(idtonel)}`);
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ message: `Error ${response.status}: ${response.statusText}` }));
       throw new Error(errorData.message || `Failed to fetch lotes for tonel ${idtonel}`);
