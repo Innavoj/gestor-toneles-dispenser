@@ -13,7 +13,16 @@ export enum TonelLocation {
   AREA_DESPACHO = 'area despacho',
   AREA_LLENADO = 'area llenado',
   LUGAR_EVENTO = 'lugar del evento',
+  AREA1_CARNAVAL = 'Area1 Carnaval',
 }
+
+
+export interface Location {
+  idlocation: string;
+  location: string;
+}
+
+
 
 // Note: KegMaterial is not in the new SQL schema for 'toneles'.
 // If material is still relevant, it would need to be added to 'toneles' table or handled differently.
@@ -146,6 +155,9 @@ export type TonelFormData = Omit<Tonel, 'idtonel' | 'createdAt' | 'updatedAt' | 
   location?: TonelLocation;
 };
 
+export type LocationFormData = Omit<Location, 'idlocation'> & {
+ location?: string;
+}
 
 export type LoteProduccionFormData = Omit<LoteProduccion, 'idlote' | 'createdAt' | 'updatedAt'>;
 

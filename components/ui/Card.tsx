@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface CardProps {
@@ -15,11 +14,11 @@ const Card: React.FC<CardProps> = ({ title, children, className = '', titleClass
     <div className={`bg-white shadow-lg rounded-lg overflow-hidden ${className}`}>
       {title && (
         <div className={`p-4 border-b border-brew-brown-200 flex justify-between items-center ${titleClassName}`}>
-          <h3 className="text-lg font-semibold text-brew-brown-700">{title}</h3>
+          <h3 className="text-base md:text-lg font-semibold text-brew-brown-700">{title}</h3>
           {actions && <div>{actions}</div>}
         </div>
       )}
-      <div className={`p-5 ${bodyClassName}`}>
+      <div className={`p-4 md:p-5 ${bodyClassName}`}>
         {children}
       </div>
     </div>
@@ -27,4 +26,3 @@ const Card: React.FC<CardProps> = ({ title, children, className = '', titleClass
 };
 
 export default Card;
-    

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } // Added useNavigate
     from 'react-router-dom';
@@ -127,24 +126,37 @@ const TonelManagementPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-brew-brown-700">Gestión de Toneles</h2>
-        <Button variant="primary" onClick={() => setIsAddTonelModalOpen(true)} leftIcon={<PlusIcon />}>
-          Registrar Nuevo Tonel
-        </Button>
-      </div>
-
-      {error && <p className="text-red-500 bg-red-100 p-3 rounded-md">{error}</p>}
-
-      {isLoading && !isAddTonelModalOpen && !isUpdateStatusModalOpen && !isScheduleMaintenanceModalOpen ? (
-        <LoadingSpinner message="Cargando toneles..." />
+      {/* Check if the initial toneles array is empty */}
+      {toneles.length === 0 && !isLoading && !error ? (
+        <div className="text-center py-10">
+          <h2 className="text-2xl md:text-3xl font-bold text-brew-brown-700 mb-4">No hay toneles registrados</h2>
+          <p className="text-gray-600 mb-6">Parece que no hay toneles en el sistema. Puedes registrar uno nuevo haciendo clic en el botón de arriba.</p>
+          <Button onClick={() => setIsAddTonelModalOpen(true)} variant="primary" leftIcon={<PlusIcon />}>
+            Registrar Nuevo Tonel
+          </Button>
+        </div>
       ) : (
-        <TonelList 
-            toneles={toneles} 
-            onDeleteTonel={handleDeleteTonel} 
-            onUpdateTonelStatus={openUpdateStatusModal}
-            onScheduleMaintenance={openScheduleMaintenanceModal}
-        />
+        <>
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl md:text-3xl py-6 font-bold text-brew-brown-700">Gestión de Toneles</h2>
+            <Button onClick={() => setIsAddTonelModalOpen(true)} variant="primary" leftIcon={<PlusIcon />}>
+              Registrar Nuevo Tonel
+            </Button>
+          </div>
+
+          {error && <p className="text-red-500 bg-red-100 p-3 rounded-md">{error}</p>}
+
+          {isLoading && !isAddTonelModalOpen && !isUpdateStatusModalOpen && !isScheduleMaintenanceModalOpen ? (
+            <LoadingSpinner message="Cargando toneles..." />
+          ) : (
+            <TonelList 
+                toneles={toneles} 
+                onDeleteTonel={handleDeleteTonel} 
+                onUpdateTonelStatus={openUpdateStatusModal}
+                onScheduleMaintenance={openScheduleMaintenanceModal}
+            />
+          )}
+        </>
       )}
 
       <Modal isOpen={isAddTonelModalOpen} onClose={() => setIsAddTonelModalOpen(false)} title="Registrar Nuevo Tonel" size="lg">

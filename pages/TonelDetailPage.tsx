@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Tonel, EventoTonel, MttoTonel, TonelFormData, TonelStatus, MttoTonelFormData, LoteProduccion, TonelLocation } from '../types';
@@ -155,8 +154,10 @@ const TonelDetailPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="text-3xl font-bold text-brew-brown-700">Tonel: {tonel.nserial}</h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl md:text-3xl font-bold text-brew-brown-700">
+          Detalles del Tonel: {tonel?.nserial}
+        </h2>
         <div className="flex space-x-2 flex-wrap gap-2">
           <Button variant="outline" onClick={() => setIsEditModalOpen(true)} leftIcon={<EditIcon />} className="mr-2">
             Editar Tonel

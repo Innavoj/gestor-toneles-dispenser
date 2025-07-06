@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MttoTonel, MttoTonelFormData, Tonel } from '../types';
@@ -98,7 +97,7 @@ const MttoTonelPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-brew-brown-700">Mantenimiento de Toneles</h2>
+        <h2 className="text-2xl md:text-3xl py-6 font-bold text-brew-brown-700">Mantenimiento de Toneles</h2>
         <Button variant="primary" onClick={() => handleOpenFormModal()} leftIcon={<PlusIcon />}>
           Programar Nueva Tarea
         </Button>

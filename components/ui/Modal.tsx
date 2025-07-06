@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface ModalProps {
@@ -14,16 +13,16 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, footer,
   if (!isOpen) return null;
 
   const sizeClasses = {
-    sm: 'max-w-sm',
-    md: 'max-w-md',
-    lg: 'max-w-lg',
-    xl: 'max-w-xl',
+    sm: 'max-w-sm md:max-w-md',
+    md: 'max-w-md md:max-w-lg',
+    lg: 'max-w-lg md:max-w-xl',
+    xl: 'max-w-xl md:max-w-2xl', // Added a larger size for larger screens
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4">
       <div className={`bg-white rounded-lg shadow-xl w-full ${sizeClasses[size]} flex flex-col max-h-[90vh]`}>
-        <div className="flex items-center justify-between p-4 border-b border-brew-brown-200">
+        <div className="flex items-center justify-between p-3 md:p-4 border-b border-brew-brown-200">
           <h3 className="text-lg font-semibold text-brew-brown-700">{title}</h3>
           <button
             onClick={onClose}
@@ -35,11 +34,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, footer,
             </svg>
           </button>
         </div>
-        <div className="p-6 overflow-y-auto">
+        <div className="p-4 md:p-6 overflow-y-auto">
           {children}
         </div>
         {footer && (
-          <div className="p-4 border-t border-brew-brown-200 bg-brew-brown-50 rounded-b-lg">
+          <div className="p-3 md:p-4 border-t border-brew-brown-200 bg-brew-brown-50 rounded-b-lg">
             {footer}
           </div>
         )}
@@ -49,4 +48,3 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, footer,
 };
 
 export default Modal;
-    

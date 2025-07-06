@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -28,9 +27,9 @@ const Button: React.FC<ButtonProps> = ({
   };
 
   const sizeStyles = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-base',
-    lg: 'px-6 py-3 text-lg',
+    sm: 'px-2 py-1 text-xs md:px-3 md:py-1.5 md:text-sm',
+    md: 'px-3 py-1.5 text-sm md:px-4 md:py-2 md:text-base',
+    lg: 'px-4 py-2 text-base md:px-6 md:py-3 md:text-lg',
   };
 
   return (
@@ -46,4 +45,3 @@ const Button: React.FC<ButtonProps> = ({
 };
 
 export default Button;
-    

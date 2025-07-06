@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Tonel, TonelStatus, LoteProduccion, MttoTonel, MttoTaskStatus, LoteProduccionStatus, Dispensador, MttoDispensador, DispensadorStatus } from '../types';
@@ -124,7 +122,7 @@ const DashboardPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-brew-brown-700">Panel Principal</h2>
+        <h2 className="text-2xl md:text-3xl py-6 font-bold text-brew-brown-700">Panel Principal</h2>
         {/* Quick add buttons can be added here or in Quick Actions card */}
       </div>
 

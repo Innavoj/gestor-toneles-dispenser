@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { Tonel, TonelStatus, TonelLocation, SelectOption } from '../../types';
 import TonelListItem from './TonelListItem';
@@ -145,13 +144,7 @@ const TonelList: React.FC<TonelListProps> = ({ toneles, onDeleteTonel, onUpdateT
           <table className="min-w-full divide-y divide-brew-brown-200 bg-white">
             <thead className="bg-brew-brown-100">
               <tr>
-                <TableHeader sortKey="nserial">NSerie</TableHeader>
-                <TableHeader sortKey="capacity">Capacidad</TableHeader>
-                <TableHeader sortKey="status">Estado</TableHeader>
-                <TableHeader sortKey="location">Ubicación</TableHeader>
-                <TableHeader>Lote Actual</TableHeader> {/* This field might not be directly sortable if it's derived */}
-                <TableHeader sortKey="acquired">Adquirido</TableHeader>
-                <TableHeader className="w-40">Acciones</TableHeader>
+                <TableHeader sortKey="nserial">NSerie</TableHeader><TableHeader sortKey="capacity">Capacidad</TableHeader><TableHeader sortKey="status">Estado</TableHeader><TableHeader sortKey="location">Ubicación</TableHeader><TableHeader>Lote Actual</TableHeader>{/* This field might not be directly sortable if it's derived */}<TableHeader sortKey="acquired">Adquirido</TableHeader><TableHeader className="w-40">Acciones</TableHeader>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-brew-brown-200">

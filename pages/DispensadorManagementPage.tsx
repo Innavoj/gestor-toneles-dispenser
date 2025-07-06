@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Dispensador, DispensadorFormData, MttoDispensadorFormData } from '../types';
@@ -114,27 +113,28 @@ const DispensadorManagementPage: React.FC = () => {
     }
   };
 
+  if (isLoading) {
+    return <LoadingSpinner message="Cargando dispensadores..." />;
+  }
+  if (error) {
+    return <p className="text-red-500 bg-red-100 p-3 rounded-md">{error}</p>;
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-brew-brown-700">Gestión de Dispensadores</h2>
-        <Button variant="primary" onClick={() => handleOpenFormModal(null)} leftIcon={<PlusIcon />}>
-          Registrar Dispensador
+        <h2 className="text-2xl md:text-3xl py-6 font-bold text-brew-brown-700">Gestión de Dispensadores</h2>
+        <Button onClick={() => handleOpenFormModal(null)} variant="primary" leftIcon={<PlusIcon />}>
+          Registrar Nuevo Dispensador
         </Button>
       </div>
 
-      {error && <p className="text-red-500 bg-red-100 p-3 rounded-md">{error}</p>}
-
-      {isLoading && !isFormModalOpen && !isScheduleMaintenanceModalOpen ? (
-        <LoadingSpinner message="Cargando dispensadores..." />
-      ) : (
-        <DispensadorList 
-            dispensadores={dispensadores} 
-            onEditDispensador={handleOpenFormModal}
-            onDeleteDispensador={handleDeleteDispensador} 
-            onScheduleMaintenance={openScheduleMaintenanceModal}
-        />
-      )}
+      <DispensadorList 
+          dispensadores={dispensadores} 
+          onEditDispensador={handleOpenFormModal}
+          onDeleteDispensador={handleDeleteDispensador} 
+          onScheduleMaintenance={openScheduleMaintenanceModal}
+      />
 
       <Modal 
         isOpen={isFormModalOpen} 

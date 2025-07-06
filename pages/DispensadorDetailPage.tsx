@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Dispensador, MttoDispensador, DispensadorFormData, MttoDispensadorFormData } from '../types';
@@ -126,12 +125,15 @@ const DispensadorDetailPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="text-3xl font-bold text-brew-brown-700">Dispensador: {dispensador.nserial}</h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl md:text-2xl font-bold text-brew-brown-700">
+          Detalles del Dispensador: {dispensador?.nserial}
+        </h2>
         <Button variant="outline" onClick={() => setIsEditModalOpen(true)} leftIcon={<EditIcon />}>
           Editar Dispensador
         </Button>
       </div>
+
       { isLoading && <LoadingSpinner message="Actualizando..." /> }
       { error && <p className="text-red-500 bg-red-100 p-3 rounded-md my-2">{error}</p> }
 

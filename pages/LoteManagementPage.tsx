@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LoteProduccion, LoteProduccionFormData, Tonel } from '../types';
@@ -100,8 +99,8 @@ const LoteManagementPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-brew-brown-700">Lotes de Producción</h2>
-        <Button variant="primary" onClick={() => handleOpenFormModal()} leftIcon={<PlusIcon />}>
+        <h2 className="text-2xl md:text-3xl py-6 font-bold text-brew-brown-700">Gestión de Lotes de Producción</h2>
+        <Button onClick={() => handleOpenFormModal()} variant="primary" leftIcon={<PlusIcon />}>
           Registrar Nuevo Lote
         </Button>
       </div>

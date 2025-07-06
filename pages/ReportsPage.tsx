@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useMemo } from 'react';
 import { Tonel, TonelStatus, LoteProduccion, MttoTonel, Dispensador, MttoDispensador, TonelLocation, DispensadorStatus, DispensadorLocation as DispensadorLocationType } from '../types'; // Added DispensadorStatus and DispensadorLocationType
 import { tonelService } from '../services/tonelService';
@@ -110,8 +109,8 @@ const ReportsPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-8">
-      <h2 className="text-3xl font-bold text-brew-brown-700">Reportes</h2>
+    <div className="space-y-6">
+      <h2 className="text-2xl md:text-3xl py-6 font-bold text-brew-brown-700">Reportes</h2>
 
       <Card title="Reporte de Disponibilidad de Toneles">
         {Object.entries(tonelAvailabilityReport).map(([status, data]) => {
