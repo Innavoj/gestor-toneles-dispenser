@@ -11,6 +11,7 @@ import ReportsPage from './pages/ReportsPage';
 import DispensadorManagementPage from './pages/DispensadorManagementPage';
 import DispensadorDetailPage from './pages/DispensadorDetailPage';
 import MttoDispensadorPage from './pages/MttoDispensadorPage';
+import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 
 
 const App: React.FC = () => {
@@ -19,7 +20,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<DashboardPage />} />
-        
+        <Route path="/admin" element={<AdminDashboardPage />} />
         <Route path="/toneles" element={<TonelManagementPage />} />
         <Route path="/toneles/:idtonel" element={<TonelDetailPage />} />
         

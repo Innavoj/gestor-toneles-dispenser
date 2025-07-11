@@ -75,6 +75,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
         <nav className="flex-grow p-4 space-y-2">
           <NavItem to="/dashboard" icon={<HomeIcon />} label="Panel Principal" onClick={closeSidebar} />
+          <NavItem to="/admin" icon={<HomeIcon />} label="Gestion Locales" onClick={closeSidebar} />
           <NavItem to="/toneles" icon={<CubeIcon />} label="Toneles" onClick={closeSidebar} />
           <NavItem to="/lotes" icon={<DocumentTextIcon />} label="Lotes de Producción" onClick={closeSidebar} />
           <NavItem to="/dispensadores" icon={<DispenserIcon size={20} />} label="Dispensadores" onClick={closeSidebar} />

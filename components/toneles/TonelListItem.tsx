@@ -64,7 +64,7 @@ const TonelListItem: React.FC<TonelListItemProps> = ({ tonel, onDelete, onUpdate
              <CogIcon size={18} />
            </Button>
           {/* Edit button was removed from list item, usually on detail page or modal */}
-          {/* <Button variant="ghost" size="sm" onClick={() => onEdit(tonel)} title="Editar Tonel"><EditIcon size={18}/></Button> */}
+          {/* <Button variant="ghost" size="sm" onClick={() => onEdit(tonel)} title="Editar Tonel"><EditIcon size={18}/></Button>  */}
           <Button variant="ghost" size="sm" onClick={() => onDelete(tonel.idtonel)} className="text-red-500 hover:text-red-700" title="Eliminar Tonel">
             <TrashIcon size={18} />
           </Button>

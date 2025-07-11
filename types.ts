@@ -20,6 +20,7 @@ export enum TonelLocation {
 export interface Location {
   idlocation: string;
   location: string;
+  description: string;
 }
 
 
@@ -157,6 +158,7 @@ export type TonelFormData = Omit<Tonel, 'idtonel' | 'createdAt' | 'updatedAt' | 
 
 export type LocationFormData = Omit<Location, 'idlocation'> & {
  location?: string;
+ description?: string;
 }
 
 export type LoteProduccionFormData = Omit<LoteProduccion, 'idlote' | 'createdAt' | 'updatedAt'>;
