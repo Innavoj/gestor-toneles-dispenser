@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { Dispensador, DispensadorFormData, DispensadorStatus, DispensadorLocation } from '../../types';
-import { DISPENSADOR_STATUS_OPTIONS, DISPENSADOR_LOCATION_OPTIONS } from '../../constants';
+import { Dispensador, DispensadorFormData, DispensadorStatus, SelectOption } from '../../types';
+import { DISPENSADOR_STATUS_OPTIONS } from '../../constants';
+import { locationService } from '../../services/locationService';
 import Input from '../ui/Input';
 import Select from '../ui/Select';
 import Textarea from '../ui/Textarea';
@@ -21,19 +22,32 @@ const DispensadorForm: React.FC<DispensadorFormProps> = ({ onSubmit, onCancel, i
             ? DISPENSADOR_STATUS_OPTIONS[0].value 
             : Object.values(DispensadorStatus)[0]) as DispensadorStatus;
   };
-  const getDefaultLocation = (): DispensadorLocation => {
-    return (DISPENSADOR_LOCATION_OPTIONS.length > 0
-            ? DISPENSADOR_LOCATION_OPTIONS[0].value
-            : Object.values(DispensadorLocation)[0]) as DispensadorLocation;
-  };
+  const [locationOptions, setLocationOptions] = useState<SelectOption[]>([]);
+  const [loadingLocations, setLoadingLocations] = useState(false);
 
   const [formData, setFormData] = useState<DispensadorFormData>({
     nserial: '',
     status: getDefaultStatus(),
-    location: getDefaultLocation(),
+    location: '',
     acquired: getTodayDateString(),
     notas: '',
   });
+
+  useEffect(() => {
+    setLoadingLocations(true);
+    locationService.getAllLocation()
+      .then((locations) => {
+        const opts = locations.map((loc) => ({ value: loc.location, label: loc.location }));
+        setLocationOptions(opts);
+        if (!initialData && opts.length > 0) {
+          setFormData(prev => ({ ...prev, location: opts[0].value }));
+        }
+      })
+      .catch(() => {
+        setLocationOptions([]);
+      })
+      .finally(() => setLoadingLocations(false));
+  }, [initialData]);
 
   useEffect(() => {
     if (initialData) {
@@ -43,14 +57,6 @@ const DispensadorForm: React.FC<DispensadorFormProps> = ({ onSubmit, onCancel, i
         location: initialData.location,
         acquired: initialData.acquired.split('T')[0],
         notas: initialData.notas || '',
-      });
-    } else {
-      setFormData({
-        nserial: '',
-        status: getDefaultStatus(),
-        location: getDefaultLocation(),
-        acquired: getTodayDateString(),
-        notas: '',
       });
     }
   }, [initialData]);
@@ -88,8 +94,9 @@ const DispensadorForm: React.FC<DispensadorFormProps> = ({ onSubmit, onCancel, i
         name="location"
         value={formData.location}
         onChange={handleChange}
-        options={DISPENSADOR_LOCATION_OPTIONS}
+        options={locationOptions}
         required
+        disabled={loadingLocations}
       />
       <Input
         label="Fecha de Adquisición"

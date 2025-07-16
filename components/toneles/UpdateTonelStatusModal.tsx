@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { Tonel, TonelStatus, TonelLocation } from '../../types';
-import { TONEL_STATUS_OPTIONS, DEFAULT_TONEL_LOCATIONS } from '../../constants';
+import { Tonel, TonelStatus, SelectOption } from '../../types';
+import { TONEL_STATUS_OPTIONS } from '../../constants';
+import { locationService } from '../../services/locationService';
 import Modal from '../ui/Modal';
 import Select from '../ui/Select';
 import Textarea from '../ui/Textarea';
@@ -12,16 +13,31 @@ interface UpdateTonelStatusModalProps {
   isOpen: boolean;
   onClose: () => void;
   tonel: Tonel | null;
-  onUpdate: (idtonel: string, status: TonelStatus, location: TonelLocation, notas?: string) => void;
+  onUpdate: (idtonel: string, status: TonelStatus, location: string, notas?: string) => void;
 }
 
 const UpdateTonelStatusModal: React.FC<UpdateTonelStatusModalProps> = ({ isOpen, onClose, tonel, onUpdate }) => {
   const [status, setStatus] = useState<TonelStatus>(TonelStatus.VACIO);
-  const [location, setLocation] = useState<TonelLocation>(TonelLocation.AREA_ALMACENAMIENTO);
+  const [location, setLocation] = useState<string>('');
   const [notas, setNotas] = useState<string>('');
+  const [locationOptions, setLocationOptions] = useState<SelectOption[]>([]);
+  const [loadingLocations, setLoadingLocations] = useState(false);
  
   
- useEffect(() => {
+  useEffect(() => {
+    setLoadingLocations(true);
+    locationService.getAllLocation()
+      .then((locations) => {
+        const opts = locations.map((loc) => ({ value: loc.location, label: loc.location }));
+        setLocationOptions(opts);
+      })
+      .catch(() => {
+        setLocationOptions([]);
+      })
+      .finally(() => setLoadingLocations(false));
+  }, []);
+
+  useEffect(() => {
     if (tonel) {
       setStatus(tonel.status);
       setLocation(tonel.location);
@@ -48,10 +64,11 @@ const UpdateTonelStatusModal: React.FC<UpdateTonelStatusModalProps> = ({ isOpen,
         />
         <Select
           label="Nueva Ubicación"
-          options={DEFAULT_TONEL_LOCATIONS}
+          options={locationOptions}
           value={location}
-          onChange={(e) => setLocation(e.target.value as TonelLocation)}
+          onChange={(e) => setLocation(e.target.value)}
           required
+          disabled={loadingLocations}
         />
         <Textarea
           label="Notas (Opcional)"

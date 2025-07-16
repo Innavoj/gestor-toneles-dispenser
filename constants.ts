@@ -10,6 +10,7 @@ import {
 
 export const APP_NAME = "Gestor de Toneles";
 
+
 export const DEFAULT_TONEL_LOCATIONS: SelectOption[] = Object.values(TonelLocation).map(loc => ({
   value: loc,
   label: loc.charAt(0).toUpperCase() + loc.slice(1),
@@ -19,6 +20,7 @@ export const TONEL_STATUS_OPTIONS: SelectOption[] = Object.values(TonelStatus).m
   value: status,
   label: status.charAt(0).toUpperCase() + status.slice(1),
 }));
+
 
 export const LOTE_STYLE_OPTIONS: SelectOption[] = Object.values(LoteProduccionStyle).map(style => ({
   value: style,

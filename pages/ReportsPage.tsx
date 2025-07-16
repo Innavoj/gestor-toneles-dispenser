@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Tonel, TonelStatus, LoteProduccion, MttoTonel, Dispensador, MttoDispensador, TonelLocation, DispensadorStatus, DispensadorLocation as DispensadorLocationType } from '../types'; // Added DispensadorStatus and DispensadorLocationType
+import { Tonel, TonelStatus, LoteProduccion, MttoTonel, Dispensador, MttoDispensador, TonelLocation, DispensadorStatus, DispensadorLocation as DispensadorLocationType, EventoTonel } from '../types'; // Added DispensadorStatus and DispensadorLocationType
 import { tonelService } from '../services/tonelService';
 import { loteService } from '../services/loteService';
 import { mttoTonelService } from '../services/mttoTonelService';
 import { dispensadorService } from '../services/dispensadorService';
 import { mttoDispensadorService } from '../services/mttoDispensadorService';
+import { eventoService } from '../services/eventoService';
+import TonelEventosTable from '../components/toneles/TonelEventosTable';
 import Card from '../components/ui/Card';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import { formatDate } from '../utils';
@@ -15,6 +17,7 @@ const ReportsPage: React.FC = () => {
   const [mttoToneles, setMttoToneles] = useState<MttoTonel[]>([]);
   const [dispensadores, setDispensadores] = useState<Dispensador[]>([]);
   const [mttoDispensadores, setMttoDispensadores] = useState<MttoDispensador[]>([]);
+ const [eventos, setEventos] = useState<EventoTonel[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,19 +31,22 @@ const ReportsPage: React.FC = () => {
             lotesData, 
             mttoTonelesData,
             dispensadoresData,
-            mttoDispensadoresData
+            mttoDispensadoresData,
+            eventosData
         ] = await Promise.all([
           tonelService.getAllToneles(),
           loteService.getAllLotes(),
           mttoTonelService.getAllMttoToneles(),
           dispensadorService.getAllDispensadores(),
-          mttoDispensadorService.getAllMttoDispensadores()
+          mttoDispensadorService.getAllMttoDispensadores(),
+          eventoService.getAllEventos()
         ]);
         setToneles(tonelesData);
         setLotes(lotesData);
         setMttoToneles(mttoTonelesData);
         setDispensadores(dispensadoresData);
         setMttoDispensadores(mttoDispensadoresData);
+        setEventos(eventosData);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error al obtener datos para reportes.");
         console.error("Error al obtener datos para reportes:", err);
@@ -50,6 +56,10 @@ const ReportsPage: React.FC = () => {
     };
     fetchData();
   }, []);
+
+      <Card title="Reporte de Eventos de Toneles">
+        <TonelEventosTable eventos={eventos} toneles={toneles} />
+      </Card>
 
   const tonelAvailabilityReport = useMemo(() => {
     const report: Record<string, { count: number, locations: Record<string, number> }> = {};
@@ -111,6 +121,10 @@ const ReportsPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl md:text-3xl py-6 font-bold text-brew-brown-700">Reportes</h2>
+
+      <Card title="Reporte de Eventos de Toneles">
+        <TonelEventosTable eventos={eventos} toneles={toneles} />
+      </Card>
 
       <Card title="Reporte de Disponibilidad de Toneles">
         {Object.entries(tonelAvailabilityReport).map(([status, data]) => {

@@ -1,8 +1,9 @@
 
-import React, { useState, useMemo } from 'react';
-import { Dispensador, DispensadorStatus, DispensadorLocation, SelectOption } from '../../types';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Dispensador, DispensadorStatus, SelectOption } from '../../types';
 import DispensadorListItem from './DispensadorListItem';
-import { DISPENSADOR_STATUS_OPTIONS, DISPENSADOR_LOCATION_OPTIONS, ITEMS_PER_PAGE } from '../../constants';
+import { DISPENSADOR_STATUS_OPTIONS, ITEMS_PER_PAGE } from '../../constants';
+import { locationService } from '../../services/locationService';
 import Input from '../ui/Input';
 import Select from '../ui/Select';
 import { ChevronUpIcon, ChevronDownIcon } from '../ui/Icon';
@@ -20,7 +21,9 @@ type SortableDispensadorFields = 'nserial' | 'status' | 'location' | 'acquired';
 const DispensadorList: React.FC<DispensadorListProps> = ({ dispensadores, onEditDispensador, onDeleteDispensador, onScheduleMaintenance }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<DispensadorStatus | ''>('');
-  const [locationFilter, setLocationFilter] = useState<DispensadorLocation | ''>('');
+  const [locationFilter, setLocationFilter] = useState<string>('');
+  const [locationOptions, setLocationOptions] = useState<SelectOption[]>([{ value: '', label: 'Todas las Ubicaciones' }]);
+  const [loadingLocations, setLoadingLocations] = useState(false);
   const [sortConfig, setSortConfig] = useState<{ key: SortableDispensadorFields; direction: 'ascending' | 'descending' } | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   
@@ -28,9 +31,19 @@ const DispensadorList: React.FC<DispensadorListProps> = ({ dispensadores, onEdit
     [{value: '', label: 'Todos los Estados'}, ...DISPENSADOR_STATUS_OPTIONS]
   , []);
 
-  const locationOptions: SelectOption[] = useMemo(() =>
-    [{ value: '', label: 'Todas las Ubicaciones'}, ...DISPENSADOR_LOCATION_OPTIONS]
-  , []);
+
+  useEffect(() => {
+    setLoadingLocations(true);
+    locationService.getAllLocation()
+      .then((locations) => {
+        const opts = locations.map((loc) => ({ value: loc.location, label: loc.location }));
+        setLocationOptions([{ value: '', label: 'Todas las Ubicaciones' }, ...opts]);
+      })
+      .catch(() => {
+        setLocationOptions([{ value: '', label: 'Todas las Ubicaciones' }]);
+      })
+      .finally(() => setLoadingLocations(false));
+  }, []);
 
   const filteredDispensadores = useMemo(() => {
     let filtered = dispensadores.filter(d => {
@@ -118,8 +131,9 @@ const DispensadorList: React.FC<DispensadorListProps> = ({ dispensadores, onEdit
           label="Filtrar por Ubicación"
           options={locationOptions}
           value={locationFilter}
-          onChange={(e) => {setLocationFilter(e.target.value as DispensadorLocation | ''); setCurrentPage(1);}}
+          onChange={(e) => {setLocationFilter(e.target.value); setCurrentPage(1);}}
           containerClassName="mb-0"
+          disabled={loadingLocations}
         />
       </div>
 

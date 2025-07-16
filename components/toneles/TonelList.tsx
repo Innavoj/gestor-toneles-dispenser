@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
-import { Tonel, TonelStatus, TonelLocation, SelectOption } from '../../types';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Tonel, TonelStatus, SelectOption } from '../../types';
 import TonelListItem from './TonelListItem';
-import { TONEL_STATUS_OPTIONS, DEFAULT_TONEL_LOCATIONS, ITEMS_PER_PAGE } from '../../constants';
+import { TONEL_STATUS_OPTIONS, ITEMS_PER_PAGE } from '../../constants';
+import { locationService } from '../../services/locationService';
 import Input from '../ui/Input';
 import Select from '../ui/Select';
 import { ChevronUpIcon, ChevronDownIcon } from '../ui/Icon';
@@ -19,7 +20,9 @@ type SortableTonelFields = 'nserial' | 'capacity' | 'status' | 'location' | 'acq
 const TonelList: React.FC<TonelListProps> = ({ toneles, onDeleteTonel, onUpdateTonelStatus, onScheduleMaintenance }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<TonelStatus | ''>('');
-  const [locationFilter, setLocationFilter] = useState<TonelLocation | ''>('');
+  const [locationFilter, setLocationFilter] = useState<string>('');
+  const [locationOptions, setLocationOptions] = useState<SelectOption[]>([{ value: '', label: 'Todas las Ubicaciones' }]);
+  const [loadingLocations, setLoadingLocations] = useState(false);
   const [sortConfig, setSortConfig] = useState<{ key: SortableTonelFields; direction: 'ascending' | 'descending' } | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -27,9 +30,19 @@ const TonelList: React.FC<TonelListProps> = ({ toneles, onDeleteTonel, onUpdateT
     [{value: '', label: 'Todos los Estados'}, ...TONEL_STATUS_OPTIONS]
   , []);
 
-  const locationOptions: SelectOption[] = useMemo(() =>
-    [{ value: '', label: 'Todas las Ubicaciones'}, ...DEFAULT_TONEL_LOCATIONS]
-  , []);
+
+  useEffect(() => {
+    setLoadingLocations(true);
+    locationService.getAllLocation()
+      .then((locations) => {
+        const opts = locations.map((loc) => ({ value: loc.location, label: loc.location }));
+        setLocationOptions([{ value: '', label: 'Todas las Ubicaciones' }, ...opts]);
+      })
+      .catch(() => {
+        setLocationOptions([{ value: '', label: 'Todas las Ubicaciones' }]);
+      })
+      .finally(() => setLoadingLocations(false));
+  }, []);
 
 
   const filteredToneles = useMemo(() => {
@@ -126,13 +139,14 @@ const TonelList: React.FC<TonelListProps> = ({ toneles, onDeleteTonel, onUpdateT
           onChange={(e) => {setStatusFilter(e.target.value as TonelStatus | ''); setCurrentPage(1);}}
           containerClassName="mb-0"
         />
-        <Select
-          label="Filtrar por Ubicación"
-          options={locationOptions}
-          value={locationFilter}
-          onChange={(e) => {setLocationFilter(e.target.value as TonelLocation | ''); setCurrentPage(1);}}
-          containerClassName="mb-0"
-        />
+      <Select
+        label="Filtrar por Ubicación"
+        options={locationOptions}
+        value={locationFilter}
+        onChange={(e) => {setLocationFilter(e.target.value); setCurrentPage(1);}}
+        containerClassName="mb-0"
+        disabled={loadingLocations}
+      />
       </div>
 
       {paginatedToneles.length === 0 && (

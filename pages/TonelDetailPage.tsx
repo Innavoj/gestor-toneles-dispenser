@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Tonel, EventoTonel, MttoTonel, TonelFormData, TonelStatus, MttoTonelFormData, LoteProduccion, TonelLocation } from '../types';
+import { Tonel, EventoTonel, MttoTonel, TonelFormData, TonelStatus, MttoTonelFormData, LoteProduccion } from '../types';
 import { tonelService } from '../services/tonelService';
 import { eventoService } from '../services/eventoService';
 import { mttoTonelService } from '../services/mttoTonelService';
@@ -11,6 +11,7 @@ import Button from '../components/ui/Button';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import { EditIcon, PlusIcon, ArrowPathIcon } from '../components/ui/Icon';
 import TonelEventos from '../components/toneles/TonelEventos';
+import TonelEventoForm from '../components/toneles/TonelEventoForm';
 import MttoTonelList from '../components/mantenimiento/MttoTonelList'; 
 import Modal from '../components/ui/Modal';
 import TonelForm from '../components/toneles/TonelForm';
@@ -32,6 +33,7 @@ const TonelDetailPage: React.FC = () => {
   const [isUpdateStatusModalOpen, setIsUpdateStatusModalOpen] = useState(false);
   const [isScheduleMaintenanceModalOpen, setIsScheduleMaintenanceModalOpen] = useState(false);
   const [editingMaintenanceTask, setEditingMaintenanceTask] = useState<MttoTonel | null>(null);
+  const [showEventoForm, setShowEventoForm] = useState(false);
 
   const fetchData = useCallback(async () => {
     if (!idtonel) {
@@ -83,7 +85,7 @@ const TonelDetailPage: React.FC = () => {
     }
   };
   
-  const handleUpdateTonelStatusLocation = async (idtonel: string, status: TonelStatus, newLocation: TonelLocation, notas?: string) => {
+  const handleUpdateTonelStatusLocation = async (idtonel: string, status: TonelStatus, newLocation: string, notas?: string) => {
     try {
       setIsLoading(true);
       await tonelService.updateTonelStatusLocation(idtonel, { status, location: newLocation, notas });
@@ -186,27 +188,36 @@ const TonelDetailPage: React.FC = () => {
       </Card>
 
       <Card title="Lotes de Producción Asociados">
-        {lotesAsociados.length === 0 ? ( 
+        {lotesAsociados.filter(lote => lote.idtonel === tonel?.idtonel).length === 0 ? (
           <p className="text-brew-brown-600">Este tonel no está asociado a ningún lote de producción actualmente.</p>
-        ) : ( 
+        ) : (
           <ul className="divide-y divide-brew-brown-100">
-            {lotesAsociados.map(lote => ( 
+            {lotesAsociados.filter(lote => lote.idtonel === tonel?.idtonel).map(lote => (
               <li key={lote.idlote} className="py-2">
                 <Link to={`/lotes/`} className="text-brew-brown-600 hover:underline">
                   {lote.lotename} ({lote.style}) - Estado: {lote.status}
                 </Link>
                 <p className="text-xs text-brew-brown-500">Vol: {lote.volumen}L | Prod: {formatDate(lote.entprod)}</p>
-              </li> 
-            ))} 
+              </li>
+            ))}
           </ul>
         )}
       </Card>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <TonelEventos eventos={eventos} />
+        <Card title="Eventos del Tonel" actions={
+          <Button variant={showEventoForm ? 'outline' : 'primary'} size="sm" onClick={() => setShowEventoForm(v => !v)} leftIcon={<PlusIcon />}>
+            {showEventoForm ? 'Cerrar' : 'Registrar Evento'}
+          </Button>
+        }>
+          {showEventoForm && tonel && ( 
+            <TonelEventoForm idtonel={tonel.idtonel} onEventoAdded={() => { setShowEventoForm(false); fetchData(); }} onCancel={() => setShowEventoForm(false)} />
+          )} 
+          <TonelEventos eventos={eventos} tonel={tonel}/>
+        </Card>
 
         <Card title="Mantenimiento Programado e Historial" actions={
-            <Button variant="primary" size="sm" onClick={() => {setEditingMaintenanceTask(null); setIsScheduleMaintenanceModalOpen(true)}} leftIcon={<PlusIcon />}>
+            <Button variant="primary" size="sm" onClick={() => {setEditingMaintenanceTask(null); setIsScheduleMaintenanceModalOpen(true)}} leftIcon={<PlusIcon />}> 
               Nueva Tarea
             </Button>
         }>

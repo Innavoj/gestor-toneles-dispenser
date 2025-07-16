@@ -31,6 +31,7 @@ const MttoTonelPage: React.FC = () => {
       ]);
       setTasks(tasksData.sort((a,b) => new Date(b.fechaini).getTime() - new Date(a.fechaini).getTime()));
       setToneles(tonelesData);
+   //   console.log(tonelesData)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al cargar tareas de mantenimiento o toneles.');
       console.error(err);
@@ -66,6 +67,7 @@ const MttoTonelPage: React.FC = () => {
       setIsLoading(true); // Or use modal-specific loading
       if (editingTask) {
         await mttoTonelService.updateMttoTonel(editingTask.idmtto, data);
+      //  console.log(data)
       } else {
         await mttoTonelService.addMttoTonel(data);
       }

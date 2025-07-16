@@ -22,13 +22,16 @@ export const eventoService = {
   getEventosByTonelId: async (idtonel: string): Promise<EventoTonel[]> => {
     // Assuming filtering by idtonel, e.g., GET /api/eventostoneles?idtonel=some-id
     // Adjust if your API uses a different path like /api/toneles/{idtonel}/eventos
+   // const response = await fetch(`${API_BASE_URL}/eventostonel/${idtonel}`);
     const response = await fetch(`${API_BASE_URL}/eventostonel?idtonel=${encodeURIComponent(idtonel)}`);
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ message: `Error ${response.status}: ${response.statusText}` }));
       throw new Error(errorData.message || `Failed to fetch eventos for tonel ${idtonel}`);
     }
     const eventos: EventoTonel[] = await response.json();
+ 
     return eventos.sort((a, b) => new Date(b.fechaevento).getTime() - new Date(a.fechaevento).getTime());
+ 
   },
 
   addEventoTonel: async (payload: AddEventoPayload): Promise<EventoTonel> => {

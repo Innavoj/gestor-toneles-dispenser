@@ -30,13 +30,18 @@ const getStatusColor = (status: MttoTaskStatus): string => {
 };
 
 const MttoTonelList: React.FC<MttoTonelListProps> = ({ tasks, toneles, onEditTask, onDeleteTask }) => {
-  
+  // Si solo se pasa un tonel, filtrar por ese idtonel
+  let filteredTasks = tasks;
+  if (toneles.length === 1) {
+    filteredTasks = tasks.filter(t => t.idtonel === toneles[0].idtonel);
+  }
+
   const getTonelNSerial = (idtonel: string): string => {
     const tonel = toneles.find(t => t.idtonel === idtonel);
     return tonel ? tonel.nserial : idtonel.substring(0,8);
   };
 
-  if (tasks.length === 0) {
+  if (filteredTasks.length === 0) {
     return <p className="text-center text-brew-brown-600 py-8">No hay tareas de mantenimiento de toneles programadas.</p>;
   }
 
@@ -54,7 +59,7 @@ const MttoTonelList: React.FC<MttoTonelListProps> = ({ tasks, toneles, onEditTas
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-brew-brown-200">
-          {tasks.map((task) => (
+          {filteredTasks.map((task) => (
             <tr key={task.idmtto} className="hover:bg-brew-brown-100/50 transition-colors">
               <td className="px-5 py-3 text-sm text-brew-brown-700 font-medium">{getTonelNSerial(task.idtonel)}</td>
               <td className="px-5 py-3 text-sm text-brew-brown-700">{task.tipomtto}</td>

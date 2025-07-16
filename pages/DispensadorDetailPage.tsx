@@ -153,7 +153,12 @@ const DispensadorDetailPage: React.FC = () => {
             Nueva Tarea Mtto.
           </Button>
       }>
-        <MttoDispensadorList tasks={mttoTasks} dispensadores={[dispensador]} onEditTask={handleEditMaintenanceTask} onDeleteTask={handleDeleteMaintenanceTask} />
+        <MttoDispensadorList
+          tasks={mttoTasks.filter(task => task.iddispensador === dispensador.iddispensador)}
+          dispensadores={[dispensador]}
+          onEditTask={handleEditMaintenanceTask}
+          onDeleteTask={handleDeleteMaintenanceTask}
+        />
       </Card>
       
       <div className="mt-8">

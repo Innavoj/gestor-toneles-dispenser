@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { Tonel, TonelFormData, TonelLocation, TonelStatus } from '../../types';
-import { DEFAULT_TONEL_LOCATIONS, TONEL_STATUS_OPTIONS } from '../../constants'; // Corrected import name
+import { Tonel, TonelFormData, TonelStatus, SelectOption } from '../../types';
+import { TONEL_STATUS_OPTIONS } from '../../constants';
+import { locationService } from '../../services/locationService';
 import Input from '../ui/Input';
 import Select from '../ui/Select';
 import Textarea from '../ui/Textarea';
@@ -19,13 +20,31 @@ const TonelForm: React.FC<TonelFormProps> = ({ onSubmit, onCancel, initialData, 
   const [formData, setFormData] = useState<TonelFormData>({
     nserial: '',
     capacity: 50, // Default capacity
-    // material is removed
     acquired: getTodayDateString(),
     vidautil: 10, // Default useful life in years, adjust as needed
     status: TonelStatus.VACIO,
-    location: TonelLocation.AREA_ALMACENAMIENTO,
+    location: '',
     notas: '',
   });
+  const [locationOptions, setLocationOptions] = useState<SelectOption[]>([]);
+  const [loadingLocations, setLoadingLocations] = useState(false);
+
+  useEffect(() => {
+    setLoadingLocations(true);
+    locationService.getAllLocation()
+      .then((locations) => {
+        const opts = locations.map((loc) => ({ value: loc.location, label: loc.location }));
+        setLocationOptions(opts);
+        // Si no hay initialData, setear la primera ubicación como default
+        if (!initialData && opts.length > 0) {
+          setFormData(prev => ({ ...prev, location: opts[0].value }));
+        }
+      })
+      .catch(() => {
+        setLocationOptions([]);
+      })
+      .finally(() => setLoadingLocations(false));
+  }, [initialData]);
 
   useEffect(() => {
     if (initialData) {
@@ -37,17 +56,6 @@ const TonelForm: React.FC<TonelFormProps> = ({ onSubmit, onCancel, initialData, 
         status: initialData.status,
         location: initialData.location,
         notas: initialData.notas || '',
-      });
-    } else {
-      // Reset for new tonel form
-      setFormData({
-        nserial: '',
-        capacity: 50,
-        acquired: getTodayDateString(),
-        vidautil: 10, 
-        status: TonelStatus.VACIO,
-        location: TonelLocation.AREA_ALMACENAMIENTO,
-        notas: '',
       });
     }
   }, [initialData]);
@@ -116,8 +124,9 @@ const TonelForm: React.FC<TonelFormProps> = ({ onSubmit, onCancel, initialData, 
             name="location"
             value={formData.location}
             onChange={handleChange}
-            options={DEFAULT_TONEL_LOCATIONS} 
+            options={locationOptions}
             required
+            disabled={loadingLocations}
           />
         </>
       )}

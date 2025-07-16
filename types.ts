@@ -34,7 +34,7 @@ export interface Tonel {
   nserial: string;
   capacity: number; // was capacityLiters
   status: TonelStatus;
-  location: TonelLocation;
+  location: string; // Ahora es string, no enum
   acquired: string; // DATE, was acquisitionDate
   vidautil: number;
   notas?: string;
@@ -101,6 +101,8 @@ export enum EventoTonelTipo {
   LIMPIEZA_INICIADA = 'limpieza iniciada',
   LIMPIEZA_FINALIZADA = 'limpieza finalizada',
   TRASLADO = 'traslado',
+  ENTRADA = 'entrada',
+  SALIDA = 'salida',
 }
 
 export interface EventoTonel {
@@ -126,7 +128,7 @@ export interface Dispensador {
   iddispensador: string;
   nserial: string;
   status: DispensadorStatus;
-  location: DispensadorLocation;
+  location: string; // Ahora es string, no enum
   acquired: string; // DATE
   notas?: string;
   createdAt?: string;
@@ -153,7 +155,7 @@ export interface MttoDispensador {
 export type TonelFormData = Omit<Tonel, 'idtonel' | 'createdAt' | 'updatedAt' | 'currentLoteId'> & {
   // Allow optional status/location for creation if backend sets defaults
   status?: TonelStatus;
-  location?: TonelLocation;
+  location?: string;
 };
 
 export type LocationFormData = Omit<Location, 'idlocation'> & {
