@@ -62,6 +62,7 @@ const TonelManagementPage: React.FC = () => {
       await tonelService.addTonel(data);
       await fetchToneles(); 
       setIsAddTonelModalOpen(false);
+     // console.log(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al registrar el tonel.');
       console.error(err);

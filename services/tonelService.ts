@@ -30,7 +30,9 @@ export const tonelService = {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(tonelData),
+      
     });
+  //  console.log(tonelData)
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ message: `Error ${response.status}: ${response.statusText}` }));
       throw new Error(errorData.message || `Failed to add tonel`);
@@ -47,7 +49,7 @@ export const tonelService = {
       body: JSON.stringify(tonelData),
       
     });
-    console.log(tonelData);
+   // console.log(tonelData);
     if (!response.ok) {
       if (response.status === 404) return undefined;
       const errorData = await response.json().catch(() => ({ message: `Error ${response.status}: ${response.statusText}` }));
@@ -67,7 +69,7 @@ export const tonelService = {
       body: JSON.stringify(tonelData),
       
     });
-    console.log(tonelData);
+   // console.log(tonelData);
     if (!response.ok) {
       if (response.status === 404) return undefined;
       const errorData = await response.json().catch(() => ({ message: `Error ${response.status}: ${response.statusText}` }));

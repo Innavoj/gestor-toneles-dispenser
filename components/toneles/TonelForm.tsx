@@ -109,6 +109,15 @@ const TonelForm: React.FC<TonelFormProps> = ({ onSubmit, onCancel, initialData, 
         required
         min="1"
       />
+      <Select
+            label="Ubicación Actual"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            options={locationOptions}
+            required
+            
+          />
       {isEditMode && (
         <>
           <Select
@@ -119,7 +128,7 @@ const TonelForm: React.FC<TonelFormProps> = ({ onSubmit, onCancel, initialData, 
             options={TONEL_STATUS_OPTIONS}
             required
           />
-          <Select
+          {/* <Select
             label="Ubicación Actual"
             name="location"
             value={formData.location}
@@ -127,7 +136,7 @@ const TonelForm: React.FC<TonelFormProps> = ({ onSubmit, onCancel, initialData, 
             options={locationOptions}
             required
             disabled={loadingLocations}
-          />
+          /> */}
         </>
       )}
       <Textarea
