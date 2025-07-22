@@ -11,6 +11,18 @@ import Card from '../components/ui/Card';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import { formatDate } from '../utils';
 
+import {
+  getTopTonelesByMaintenance,
+  getTonelesByMaintenanceType,
+  getTonelesByMaintenanceDate,
+  getTonelesFueraDeServicio,
+  getTopDispensadoresByMaintenance,
+  getDispensadoresByMaintenanceType,
+  getDispensadoresByMaintenanceDate,
+  getDispensadoresFueraDeServicio
+} from '../src/utils/analytics';
+
+
 const ReportsPage: React.FC = () => {
   const [toneles, setToneles] = useState<Tonel[]>([]);
   const [lotes, setLotes] = useState<LoteProduccion[]>([]);
@@ -56,6 +68,19 @@ const ReportsPage: React.FC = () => {
     };
     fetchData();
   }, []);
+
+  // Analítica de toneles
+  const topToneles = getTopTonelesByMaintenance(mttoToneles, toneles, 5);
+  const tonelesPorTipo = getTonelesByMaintenanceType(mttoToneles, toneles);
+  const tonelesPorFecha = getTonelesByMaintenanceDate(mttoToneles, toneles);
+  const tonelesFueraServicio = getTonelesFueraDeServicio(toneles);
+
+  // Analítica de dispensadores
+  const topDispensadores = getTopDispensadoresByMaintenance(mttoDispensadores, dispensadores, 5);
+  const dispensadoresPorTipo = getDispensadoresByMaintenanceType(mttoDispensadores, dispensadores);
+  const dispensadoresPorFecha = getDispensadoresByMaintenanceDate(mttoDispensadores, dispensadores);
+  const dispensadoresFueraServicio = getDispensadoresFueraDeServicio(dispensadores);
+
 
       <Card title="Reporte de Eventos de Toneles">
         <TonelEventosTable eventos={eventos} toneles={toneles} />
@@ -120,7 +145,7 @@ const ReportsPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl md:text-3xl py-6 font-bold text-brew-brown-700">Reportes</h2>
+      <h2 className="text-2xl md:text-3xl py-6 font-bold text-brew-brown-700">Analítica de Toneles y Dispensadores</h2>
 
       <Card title="Reporte de Eventos de Toneles">
         <TonelEventosTable eventos={eventos} toneles={toneles} />
@@ -144,6 +169,24 @@ const ReportsPage: React.FC = () => {
         })}
          {toneles.length === 0 && <p className="text-brew-brown-500">No hay datos de toneles para este reporte.</p>}
       </Card>
+
+      <Card title="Toneles con más mantenimientos">
+        <ul>
+          {topToneles.filter(t => t.mttoCount > 0).map(t => (
+              <li key={t.idtonel}>{t.nserial} - {t.mttoCount} mantenimientos</li>
+          ))}
+        </ul>
+      </Card>
+
+      <Card title="Toneles fuera de servicio">
+        <ul>
+          {tonelesFueraServicio.map(t => (
+            <li key={t.idtonel}>{t.nserial}</li>
+          ))}
+          {tonelesFueraServicio.length === 0 && <p className="text-brew-brown-500"> No hay Toneles fuera de servicios</p>}
+        </ul>
+      </Card>
+
 
       <Card title="Reporte de Lotes de Producción y Tonel Asociado">
         {lotePorTonelReport.length === 0 && <p className="text-brew-brown-500">No hay lotes de producción.</p>}
@@ -203,6 +246,23 @@ const ReportsPage: React.FC = () => {
           );
         })}
         {dispensadores.length === 0 && <p className="text-brew-brown-500">No hay datos de dispensadores para este reporte.</p>}
+      </Card>
+
+      <Card title="Dispensadores con más mantenimientos">
+        <ul>
+          {topDispensadores.filter(d => d.mttoCount > 0).map(d => (
+            <li key={d.iddispensador}>{d.nserial} - {d.mttoCount} mantenimientos</li>
+          ))}
+        </ul>
+      </Card>
+
+      <Card title="Dispensadores fuera de servicio">
+        <ul>
+          {dispensadoresFueraServicio.map(d => (
+            <li key={d.iddispensador}>{d.nserial}</li>
+          ))}
+          {dispensadoresFueraServicio.length === 0 && <p className="text-brew-brown-500"> No hay Dispensadores fuera de servicios</p>}
+        </ul>
       </Card>
 
       <Card title="Historial Completo de Mantenimiento de Dispensadores (Recientes Primero)">
